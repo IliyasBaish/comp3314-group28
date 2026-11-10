@@ -11,17 +11,17 @@
 | Slides | **15 November 2026, 23:59** | Ready 14 November; submit 15 November |
 | Report (~3–4 pages, LaTeX) | **29 November 2026, 23:59** | Final PDF 28 November; submit 29 November |
 
-Times assumed to be Hong Kong time; verify against Moodle. Presentation: **9 minutes + 3 minutes Q&A**; all members attend. Presentation date: confirm separately.
+Times assumed to be Hong Kong time; verify against Moodle. Presentation: **9 minutes + 3 minutes Q&A**; all members attend. Presentation date: **23 November 2026**.
 
 ## Who does what?
 
-Replace B–D with names at our first meeting. Everyone reads the full paper, writes their section, prepares their slides, and learns the whole presentation for Q&A.
+Replace B and D with names at our first meeting. Everyone reads the full paper, writes their section, prepares their slides, and learns the whole presentation for Q&A.
 
 | Owner | Main work | Bonus work | Final coordination |
 |---|---|---|---|
 | **A — Iliyas** | Algorithm (Section 2): explain W, D, S, Y, F and the update | Core NumPy implementation | Repository and code integration |
 | **B — TBD** | Theory (Section 3): regularization, convergence, course connections | Check iteration against a linear-system solution | LaTeX integration and equation checks |
-| **C — TBD** | Evidence (Section 4): datasets, baselines, results, what claims they support | Toy data, 1-NN baseline, repeated evaluation | References and results consistency |
+| **C — Surkhay** | Evidence (Section 4): datasets, baselines, results, what claims they support | Toy data, 1-NN baseline, repeated evaluation | References and results consistency |
 | **D — TBD** | Motivation, assumptions, strengths, limitations, extensions | Bandwidth sensitivity and plots | Slide assembly and rehearsal timing |
 
 **Review:** A reviews B; B reviews C; C reviews D; D reviews A. Each author fixes their own section. Rebalance by estimated hours; integration work counts toward the workload.
