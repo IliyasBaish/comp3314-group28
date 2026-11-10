@@ -1,0 +1,6 @@
+alpha,max_abs_eig_S,predicted_iterations,iterations_to_tol,max_abs_diff_vs_solve,predicted_slope_ln_alpha,empirical_slope_log_err_vs_t,initialisation_independence,label_mismatches_vs_solve,unlabelled_accuracy
+0.5,1.0,40,29,8.088e-13,-0.69315,n/a,1.686e-12,0,0.7727
+0.9,1.0,263,167,8.198e-12,-0.10536,-0.13012,1.618e-11,0,0.8788
+0.95,1.0,539,326,1.673e-11,-0.05129,-0.06203,3.459e-11,0,0.9394
+0.99,1.0,2750,1405,9.143e-11,-0.01005,-0.01319,1.887e-10,0,0.9697
+0.999,1.0,27618,10860,7.517e-10,-0.001,-0.00137,1.720e-09,0,1.0
