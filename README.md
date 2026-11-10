@@ -20,7 +20,7 @@ Replace B and D with names at our first meeting. Everyone reads the full paper, 
 | Owner | Main work | Bonus work | Final coordination |
 |---|---|---|---|
 | **A — Iliyas** | Algorithm (Section 2): explain W, D, S, Y, F and the update | Core NumPy implementation | Repository and code integration |
-| **B — TBD** | Theory (Section 3): regularization, convergence, course connections | Check iteration against a linear-system solution | LaTeX integration and equation checks |
+| **B — Dylan** | Theory (Section 3): regularization, convergence, course connections | Check iteration against a linear-system solution | LaTeX integration and equation checks |
 | **C — Surkhay** | Evidence (Section 4): datasets, baselines, results, what claims they support | Toy data, 1-NN baseline, repeated evaluation | References and results consistency |
 | **D — TBD** | Motivation, assumptions, strengths, limitations, extensions | Bandwidth sensitivity and plots | Slide assembly and rehearsal timing |
 
