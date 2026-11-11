@@ -22,7 +22,7 @@ Confirm the remaining role at our first meeting. Everyone reads the full paper, 
 | **A — Iliyas** | Algorithm (Section 2): explain W, D, S, Y, F and the update | Core NumPy implementation | Repository and code integration |
 | **B — Dylan** | Theory (Section 3): regularization, convergence, course connections | Check iteration against a linear-system solution | LaTeX integration and equation checks |
 | **C — Surkhay** | Evidence (Section 4): datasets, baselines, results, what claims they support | Toy data, 1-NN baseline, repeated evaluation | References and results consistency |
-| **D — TBD** | Motivation, assumptions, strengths, limitations, extensions | Bandwidth sensitivity and plots | Slide assembly and rehearsal timing |
+| **D — Thumula** | Motivation, assumptions, strengths, limitations, extensions | Bandwidth sensitivity and plots | Slide assembly and rehearsal timing |
 
 **Review:** A reviews B; B reviews C; C reviews D; D reviews A. Each author fixes their own section. Rebalance by estimated hours; integration work counts toward the workload.
 

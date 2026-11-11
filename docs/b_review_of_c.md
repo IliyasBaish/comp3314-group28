@@ -46,7 +46,8 @@ propagation accuracy is **99.55% mean** vs your 1-NN 77.64%. Per-seed table in
 his `src.lgc:predict` lands, `python -m experiments.run --predictor src.lgc:predict`
 should reproduce ~99.5%, and any deviation is a flag, not a discovery. Marked
 clearly in the CSV as B's reference pending A, so our report comparison claim only
-fires once both implementations agree.
+fires once both implementations agree. **(They agreed the same night: PR #3 merged,
+0/400 label differences per seed — see addendum.)**
 
 ## Two nits
 
@@ -58,6 +59,21 @@ fires once both implementations agree.
    figures shouldn't be pasted into our report; refer instead). I'll flag to D when
    the figure policy for slides comes up (slides label "paper figures vs ours", so
    one figure there is probably fine, but report stays prose).
+
+## Post-merge addendum (same night — C's comparison in fe0d47c, re-reviewed)
+
+- Reproduced `experiments.run --predictor src.lgc:predict --sigmas 0.05 0.1 0.15 0.3 0.6`
+  on merged main: **all 60 trial rows reproduce exactly** (same numpy lineages, same seeds).
+- Recomputed the headline metrics from `results/comparison/predictions.csv` + `points.csv`
+  as promised in the protocol: 890/3980 1-NN misclassifications = 22.36% ✓.
+- All ten sigma=0.15 paired diffs negative (worst -16.8pp) ✓. One scope nit for the report
+  line before the final freeze: "lower error in every paired trial" is true *at sigma=0.15*,
+  but `paired.csv` has 50 rows and eight of them (all sigma=0.60) favor 1-NN by up to
+  +26.9pp — suggest the draft's sentence explicitly scopes to the primary config so nobody
+  reads it across the sweep. The sweep paragraph itself already tells the truth here,
+  so this is one clause of wording, not a content fix.
+- `report/main.tex` recompiles clean with the updated `c_evidence_draft.tex` (3 pages,
+  the new `Section~\ref{sec:theory}` reference resolves against my theory section ✓).
 
 ## Review-chain note for the others
 
