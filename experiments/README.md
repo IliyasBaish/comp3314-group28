@@ -1,8 +1,7 @@
 # Role C: experiment protocol and handoff
 
 Owner: Surkhay. Core LGC algorithm: Iliyas (A). Equation/convergence checks: B.
-Bandwidth analysis and final slide assembly: D. This folder implements C's work
-without supplying or claiming to validate A's missing core algorithm.
+Bandwidth analysis and final slide assembly: D. The runner uses Iliyas’s NumPy predictor.
 
 ## Setup and current run
 
@@ -13,13 +12,13 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements-experiments.txt
 python -m unittest discover -s tests -v
-python -m experiments.run
-python -m experiments.plot
+python -m experiments.run --predictor src.lgc:predict --sigmas 0.15 0.05 0.1 0.3 0.6 --out results/comparison
+python -m experiments.plot --results results/comparison
 ```
 
-The default output is `results/baseline/`. It is **1-NN only**. No LGC results,
-improvement claim, or completed from-scratch reproduction is implied.
-The manifest records the actual Python and NumPy versions used.
+These commands reproduce the [paired comparison](../results/comparison/README.md).
+Omitting `--predictor` runs the 1-NN baseline alone and defaults to `results/baseline/`.
+The manifest records the Python and NumPy versions used.
 
 ## Fixed protocol
 
@@ -35,7 +34,7 @@ The manifest records the actual Python and NumPy versions used.
 - Every method/bandwidth receives the same dataset and label placement for each seed.
 - Error = incorrect unrevealed predictions / 398. Report the mean and sample SD
   (`ddof=1`) across seeds. The SD is not a confidence interval or standard error.
-- Default proposed LGC configuration: sigma=0.15 and alpha=0.99. Sigma is an
+- Fixed LGC comparison: sigma=0.15 and alpha=0.99. Sigma is an
   initial fixed toy-data configuration, **not** a demonstrated optimal value or
   a verified copy of the paper's toy setting. Alpha follows Section 4.
 - Do not choose a bandwidth or seed by evaluation error. For D's descriptive
@@ -48,52 +47,17 @@ Having a label from every class is a favorable sampling assumption, not guarante
 when labels arrive naturally. This is a partial qualitative reproduction of the
 two-moons idea, not a replication of the paper's samples, full benchmarks, or numbers.
 
-## Proposed interface for A (agree before integration)
+## Predictor interface and sensitivity results
 
-Provide a callable accessible as `module:function`:
+`src.lgc:predict` accepts `X` and the observed labels (`-1` for unrevealed
+points), plus keyword arguments `sigma` and `alpha`. It returns one class
+prediction per row. The runner compares both methods on each shared trial.
+The fixed σ = 0.15 run matches Dylan’s reference accuracies on all ten seeds.
 
-```python
-def predict(X, observed_labels, *, sigma, alpha):
-    # X: float array, shape (n, 2); all coordinates are available.
-    # observed_labels: integer array, shape (n,); -1 means unrevealed, 0/1 known.
-    # Return integer predictions of shape (n,), each 0 or 1.
-    ...
-```
-
-This interface is proposed locally; it has not been agreed with Iliyas yet.
-If his core returns an `(n, 2)` score matrix, a small wrapper can return
-`scores.argmax(axis=1)`. Do not pass the true-label CSV into the predictor.
-Use sigma in `exp(-squared_distance / (2*sigma**2))`; agree on this convention
-to avoid confusing sigma with gamma. Use zero diagonal and symmetric degree
-normalization as in Section 2. B should independently check the fixed point.
-For a numerically isolated vertex, agree on an explicit handling policy instead
-of producing NaNs. Make non-convergence an explicit error or diagnostic.
-
-Once the actual callable exists (the following module is an **example path**):
-
-```bash
-python -m experiments.run --predictor src.lgc:predict --out results/comparison
-python -m experiments.plot --results results/comparison
-```
-
-The runner does not silently fall back to another implementation. Import errors,
-invalid class predictions, and exceptions stop the run before new CSVs are written.
-The adapter checks output shape/labels; it does not establish algorithm correctness.
-Use a fresh output directory for a different experiment configuration.
-
-## Handoff to D: sensitivity results
-
-After integration, D can run the same fixed seeds at a declared bandwidth grid:
-
-```bash
-python -m experiments.run --predictor src.lgc:predict --sigmas 0.05 0.1 0.15 0.3 0.6 --out results/sensitivity
-```
-
-The grid is proposed, not yet run. Keep alpha and the label budget fixed. A plot
-of error versus sigma should include mean and sample SD, with the unchanged
-1-NN mean as a reference. Do not present the lowest-error sigma as an unbiased
-test result; selecting it would require separate validation labels or a separate
-development protocol. D owns the final sensitivity interpretation and plot.
+The command above also runs the five-bandwidth sweep with α and the label
+budget fixed. The first listed bandwidth supplies the prediction figure.
+`results/comparison/summary.csv` supplies the means and sample SDs for D’s
+bandwidth analysis. The sweep uses the same evaluation data for all settings.
 
 ## Outputs
 

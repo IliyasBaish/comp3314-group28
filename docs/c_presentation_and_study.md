@@ -6,7 +6,7 @@ deck; D assembles the presentation. Numerical statements about the paper are
 supported in `docs/c_paper_evidence.md` with original section/figure locators.
 
 Use the [evidence slide draft](../slides/evidence-draft.md) for the two-slide outline,
-speaking script, and comparison update after integration.
+speaking script, and measured comparison.
 
 ## Understand these concepts in your own words
 
@@ -82,9 +82,9 @@ classifier using only two labeled examples cannot observe from those two alone.
 **Does unlabeled data always help?** No. If graph structure does not match class
 membership, propagation can spread wrong labels across classes.
 
-**Did your experiment reproduce the paper?** Only the two-moons idea using new
-data. We have not replicated its exact samples or its USPS/text benchmarks.
-At the current stage, only the baseline has actually run.
+**Did your experiment reproduce the paper?** We reproduced the two-moons demonstration
+using generated data. At our fixed bandwidth, LGC averaged 0.45% error versus
+22.36% for 1-NN. The paper’s USPS and text benchmarks use separate datasets.
 
 **Why one label per class?** It creates the sparse-label setting while ensuring
 every class has a starting signal. It is also a favorable coverage assumption.
@@ -93,9 +93,10 @@ every class has a starting signal. It is also a favorable coverage assumption.
 Ten runs provide a small descriptive robustness check, not a broad statistical
 guarantee. The paper uses 100 trials for its real-data curves.
 
-**How did you choose sigma?** We proposed a fixed initial scale before running
-LGC, not a best value selected on evaluation labels. D will show a descriptive
-sweep. If we later tune sigma, we need a separate validation protocol.
+**How did you choose sigma?** We fixed σ = 0.15 before the comparison. The five-setting
+sweep shows sensitivity. At σ = 0.6, LGC error rose to 32.59%, which is consistent
+with stronger affinities connecting the two moons. Tuning would need separate
+validation data.
 
 **How strong are the paper's comparisons?** They include both supervised and a
 related semi-supervised comparator and average trials. But the text outcome is
@@ -120,10 +121,10 @@ and explanations." Only claim review/understanding once you have actually done i
 2. Explain why two labeled points can be insufficient for 1-NN and how graph
    structure could help. Draw the two moons yourself.
 3. Read `experiments/README.md`, then follow `protocol.py` from data to masked
-   labels to prediction to scoring. Run the baseline command yourself.
-4. Explain the current result without saying anything about unmeasured LGC performance.
+   labels to prediction to scoring. Run the paired comparison yourself.
+4. Explain the fixed-bandwidth result and what the sweep says about its scope.
 5. Learn the symbols and update rule at an intuitive level; ask B to check your
-   explanation of convergence and A to walk you through the eventual core.
+   explanation of convergence and A to walk you through the predictor.
 6. Rehearse your two-minute draft with the actual figures. Answer the questions
    above without reading. Meet D to check the transition into their critique.
 

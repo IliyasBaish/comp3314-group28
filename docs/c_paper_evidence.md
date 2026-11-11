@@ -128,12 +128,12 @@ construction, label coverage, and parameter choice.
 | Paper | Our current work |
 |---|---|
 | Original two-moons illustration and two real-data benchmarks | Newly generated 400-point toy datasets only |
-| 100 trials for the digit and text curves | 10 fixed seeds for our baseline protocol |
-| Multiple supervised and semi-supervised comparators | 1-NN completed; our team's LGC comparison pending |
-| Author-reported outcomes | Locally measured baseline results in `results/baseline/` |
+| 100 trials for the digit and text curves | 10 fixed seeds for our paired protocol |
+| Multiple supervised and semi-supervised comparators | Paired comparison of Euclidean 1-NN and our NumPy LGC |
+| Author-reported outcomes | Measured two-moons results in `results/comparison/` |
 
-Our baseline mean error is 22.36%, sample SD 4.22 percentage points, with two
-labels revealed and 398 scored points per run. It is not a digit/text result,
-not an estimate copied from Figure 5, and not evidence that LGC wins. Once the
-core is integrated, update the comparison using identical trials and report
-the actual outcome, even if the initial configuration performs poorly.
+On the 398 unrevealed points per trial, LGC averaged 0.45% error (sample SD
+0.54 percentage points) at σ = 0.15 and α = 0.99. The 1-NN baseline averaged
+22.36% (sample SD 4.22 percentage points). The bandwidth sweep includes a
+setting where LGC does worse than 1-NN. Both results describe the generated
+moons and the stated label budget. [Full comparison](../results/comparison/README.md)

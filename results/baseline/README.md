@@ -1,4 +1,7 @@
-# Baseline results: LGC comparison pending
+# Original 1-NN baseline run
+
+The [paired experiment](../comparison/README.md) uses these same trials and
+adds predictions from the team's LGC implementation.
 
 Generated using `python -m experiments.run` and `python -m experiments.plot`.
 See `manifest.json` for the exact environment and protocol, and

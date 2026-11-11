@@ -107,7 +107,7 @@ def main(argv=None) -> None:
         for seed, method, sigma, labels in predictions for i, label in enumerate(labels)
     ])
     manifest = {
-        "status": "core comparison run; review required" if predictor else "baseline only; LGC pending",
+        "status": "paired comparison completed" if predictor else "baseline only; LGC pending",
         "reproduction": "partial qualitative reproduction; newly generated toy data",
         "seeds": args.seeds, "n_samples": args.n_samples, "noise": args.noise,
         "labels_per_class": 1, "evaluation": "unrevealed labels only",

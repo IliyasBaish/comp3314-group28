@@ -1,6 +1,6 @@
-% C's draft fragment; B integrates into the main report and page budget.
+% Role C contribution included by main.tex.
 % Source: Zhou et al., Sections 4, 4.1--4.3, Figure 5, pp. 324--327.
-% Uses bibliography key zhou2003consistency from c_references.bib.
+% Uses bibliography key zhou2003consistency from references.bib.
 \subsection{Experimental evidence and its limits}
 Zhou et al.~\cite{zhou2003consistency} evaluate their method using a
 two-moons illustration, a four-class subset of USPS handwritten digits
@@ -28,22 +28,23 @@ of every class is a favorable assumption, and the absence of displayed error
 bars in Figure~5 limits interpretation of small differences between curves.
 These are our assessments of the evidence, not additional experimental findings.
 
-\subsection{Our partial reproduction: current baseline}
-Our fixed protocol generates 400 noisy two-moons points for each of ten
-seeds (0--9), reveals one uniformly selected label per class, and evaluates
-the remaining 398 points. The moons use evenly spaced semicircle coordinates
-with independent Gaussian coordinate noise of standard deviation 0.08.
-The Euclidean 1-nearest-neighbor baseline yields a mean error of
-$22.36\%$, with a sample standard deviation of 4.22 percentage points across
-seeds. Both data generation and label placement vary between seeds.
-These are our measurements on newly generated toy data, not values from
-the paper's real-data benchmarks.
+\subsection{Our partial reproduction on two moons}
+For each of ten fixed seeds (0--9), we generated 400 two-moons points
+with Gaussian coordinate noise of standard deviation 0.08. We revealed one
+uniformly sampled label per class and scored predictions on the other 398
+points. Euclidean 1-NN and our NumPy LGC implementation used the same
+coordinates and revealed labels in each trial.
 
-At this stage, integration of the team's core consistency implementation
-is pending, so no comparative improvement is claimed. The proposed comparison
-uses identical coordinates and revealed labels for both methods, withholding
-all evaluation labels from the predictor. A descriptive bandwidth sweep
-must report all declared settings; selecting the best evaluation result
-would require a separate validation protocol. This experiment is a partial
-qualitative reproduction, not an exact replication of the paper.
-% Replace the pending paragraph with checked comparison results after integration.
+At our fixed setting of $\sigma=0.15$ and $\alpha=0.99$, mean error across
+seeds was $0.45\%$ for LGC (sample SD 0.54 percentage points), compared with
+$22.36\%$ for 1-NN (SD 4.22 percentage points). LGC had lower error in every
+paired trial. Its per-seed accuracies also matched the independent fixed-point
+check described in Section~\ref{sec:theory}.
+
+A descriptive sweep held $\alpha$, data, and revealed labels fixed. LGC mean
+error was $0.15\%$, $0.10\%$, $0.45\%$, $14.07\%$, and $32.59\%$ at
+$\sigma=0.05, 0.10, 0.15, 0.30,$ and $0.60$, respectively. The results show
+that label propagation can exploit the curved structure, and that the
+advantage depends on the graph bandwidth. The sweep describes sensitivity
+on these trials. Our results concern generated toy data with a label from
+each class, so their scope is narrower than the paper's image and text studies.
