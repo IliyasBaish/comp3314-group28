@@ -1,0 +1,37 @@
+% Group 28 report — LaTeX integration owned by B (Dylan).
+% Build: latexmk -pdf main.tex   (from report/)
+% Target ~3-4 pages per course spec. Section owners are marked in the stubs.
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\todo}[1]{\textbf{[TODO: #1]}}
+
+\title{\bfseries Learning with Local and Global Consistency:\\
+  Group 28 Report (draft)}
+\author{Iliyas Baishev \quad Dylan Porter \quad Surkhay Malikov \quad Karu Thumula\\
+  \small COMP3314 Machine Learning, HKU, 2026--27 Sem 1}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+\vspace{-3em}
+
+\input{sections/intro}          % D
+\input{sections/algorithm}      % A
+\input{sections/theory}         % B (written)
+\input{c_evidence_draft}        % C (written; subsections)
+\input{sections/critique}       % D
+\input{sections/conclusion}     % shared, short
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+% Note: c_references.bib superseded by references.bib (same key zhou2003consistency,
+% plus spectral-clustering/harmonic/manifold entries used in the theory section).
+
+\end{document}

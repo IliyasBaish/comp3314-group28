@@ -1,0 +1,6 @@
+claim,rel_gap,argmax_diff_vs_main
+sec2: (I-aP)^-1 Y == (D-aW)^-1 D Y,1.0514768175250085e-15,6
+sec2: (I-aP')^-1 Y == (D-aW)^-1 D Y  (as written in paper),0.8192683841145568,6
+algebra: (I-aP')^-1 Y == D (D-aW)^-1 Y (corrected form),1.3642446710027318e-15,6
+sec4 variant(2) as written: (D-aW)^-1 Y vs (I-aP')^-1 Y,0.8277500673181019,6
+main S vs variant (I-aP)^-1 Y (row-scaling),0.32963677897999644,6

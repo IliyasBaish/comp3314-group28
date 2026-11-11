@@ -1,6 +1,6 @@
 # Convergence check — Role B bonus (our results, not the paper's)
 
-Script: `experiments/convergence_check.py` (numpy only, run command in the file header).
+Script: `experiments/convergence_check.py` (numpy only; run `python3 -m experiments.convergence_check ...` from the repo root, commands in the file header).
 Data: 200-point two-moons toy, noise 0.1, seed 0, one revealed label per class
 (the paper's Figure 1(a) pattern; the graph construction is exactly Section 2:
 zero-diagonal RBF affinity with σ = 0.1, symmetric normalisation `S = D^-1/2 W D^-1/2`).
@@ -52,6 +52,29 @@ should be observable.
   knob: bigger α diffuses labels further before stopping. Cost: ~10,000 iterations at
   0.999 vs 1,405 at 0.99. On this toy the paper's fixed 0.99 is cheap enough that
   0.999 is reachable anyway.
+
+## Follow-up pass (later the same day, after Role C landed)
+
+- **Variants audit** (`results/variants_audit.csv`): §2's identity
+  `(I−αP)⁻¹Y == (D−αW)⁻¹DY` holds to 1.6e-15. But §2's claim that the transpose
+  variant "is equivalent to F* = (D−αW)⁻¹DY" fails literally (relative gap 0.82);
+  the algebra-correct form `(I−αPᵀ)⁻¹Y = D·(D−αW)⁻¹Y` verifies to 2.5e-15.
+  Pre-multiplying by D is a positive per-row rescaling, so the **argmax rule is
+  unaffected** — "equivalent for classification" is defensible while the printed
+  matrix identity is not. All variants differ from the main S-based argmax at
+  ≤6/200 toy points: a robustness observation, and an equation-check finding.
+- **Q(F) optimality (§3 Eq. 4-6):** stationarity residual 2.1e-17 at F\* with
+  μ = (1−α)/α, and 18/18 random perturbations of F\* raised Q. Solid.
+- **Protocol mode** (`--protocol`, `results/protocol_check.csv`): on C's exact
+  trials (seeds 0-9, n=400, noise 0.08, σ=0.15, α=0.99) every trial converges to
+  the solve within 8.3e-11 (= tol/(1−α), theory again), zero argmax mismatches,
+  and the reference propagation accuracy averages **99.55%** against his 1-NN
+  accuracy of 77.64% (`results/baseline/summary.csv`). This is B's reference
+  pending A's core, **not a team comparison claim** until `src.lgc:predict`
+  reproduces it.
+- **Plot:** `results/convergence_rate.png`, generated with
+  `uv run --with matplotlib python3 -m experiments.convergence_check --sweep 0.5 0.9 0.95 0.99 0.999 --plot`
+  (matplotlib deliberately not a repo requirement).
 
 ## Caveats
 

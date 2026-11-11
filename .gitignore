@@ -11,3 +11,8 @@ data/
 *.out
 *.toc
 *.synctex.gz
+.latexmkrc
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
