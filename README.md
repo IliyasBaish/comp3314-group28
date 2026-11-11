@@ -15,7 +15,7 @@ Times assumed to be Hong Kong time; verify against Moodle. Presentation: **9 min
 
 ## Who does what?
 
-Replace B and D with names at our first meeting. Everyone reads the full paper, writes their section, prepares their slides, and learns the whole presentation for Q&A.
+Confirm the remaining role at our first meeting. Everyone reads the full paper, writes their section, prepares their slides, and learns the whole presentation for Q&A.
 
 | Owner | Main work | Bonus work | Final coordination |
 |---|---|---|---|
@@ -66,7 +66,17 @@ Target ~8 slides. Clearly label paper figures versus our results. Everyone prepa
 
 Prioritize understanding (40%) and critique (30%); report is 10%, presentation/Q&A 20%. Bonus is up to 10 additional percentage points.
 
-**Current status:** planning scaffold only; no implementation or results yet. Before bonus submission, add exact setup/run commands, dependency versions, seed/configuration details, results and discrepancies here. Credit any reused code or data. The submitted bonus repository must be **public**.
+**Current status:** C's evaluation pipeline and 1-NN baseline are ready. Across 10 fixed seeds, 1-NN has **22.36% mean error** with **4.22 percentage points sample SD** on unrevealed points. B's [convergence check](results/convergence_check_summary.md) uses its own toy setup to compare iteration with the linear-system solution. The paired comparison with A's core LGC implementation is pending. Credit any reused code or data. The submitted bonus repository must be **public**.
+
+### Role C: evidence and experiments
+
+- [Setup, exact commands, protocol, and proposed core interface](experiments/README.md)
+- [Baseline results, configuration, and generated figures](results/baseline/README.md)
+- [Paper evidence and critical interpretation](docs/c_paper_evidence.md)
+- [Two-minute evidence slide draft](slides/evidence-draft.md) and [study guide and Q&A](docs/c_presentation_and_study.md)
+- [Report section draft](report/c_evidence_draft.tex) and [reference entry](report/c_references.bib) for B to integrate
+
+Quick baseline run after installing `requirements-experiments.txt`: `python -m experiments.run`, then `python -m experiments.plot`. Checks: `python -m unittest discover -s tests -v`. The experiment guide documents all 10 seeds, the two-label sampling rule, dependency versions, and how to integrate A's predictor without passing it withheld labels. A's interface is a proposal until agreed with Iliyas; D owns the final bandwidth analysis and slide assembly.
 
 ## GitHub workflow
 

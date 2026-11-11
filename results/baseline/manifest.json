@@ -1,0 +1,29 @@
+{
+  "status": "baseline only; LGC pending",
+  "reproduction": "partial qualitative reproduction; newly generated toy data",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "n_samples": 400,
+  "noise": 0.08,
+  "labels_per_class": 1,
+  "evaluation": "unrevealed labels only",
+  "geometry": "evenly spaced semicircles + independent Gaussian coordinate noise; shuffled",
+  "rng": "NumPy default_rng; SeedSequence(seed).spawn(2) for data and labels",
+  "predictor": null,
+  "sigmas": [],
+  "alpha": null,
+  "parameter_policy": "fixed defaults / descriptive sweep; no selection using evaluation labels",
+  "python_version": "3.14.6",
+  "numpy_version": "2.5.1",
+  "standard_deviation": "sample SD across seeds (ddof=1); not a confidence interval"
+}

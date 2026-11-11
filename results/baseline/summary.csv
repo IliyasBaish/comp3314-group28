@@ -1,0 +1,2 @@
+method,sigma,alpha,n_trials,mean_error,std_error,mean_accuracy
+1-NN,,,10,0.22361809045226133,0.04220972585713284,0.7763819095477387

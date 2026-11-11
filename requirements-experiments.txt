@@ -1,0 +1,3 @@
+# Tested experiment environment; the group's core implementation may add dependencies.
+numpy==2.5.1
+matplotlib==3.10.8
