@@ -177,7 +177,7 @@ def q_functional(W: np.ndarray, d: np.ndarray, Y: np.ndarray, F: np.ndarray, mu:
     halved, plus mu * sum_i ||F_i - Y_i||^2."""
     Fhat = F / np.sqrt(d)[:, None]
     diff = Fhat[:, None, :] - Fhat[None, :, :]
-    smooth = 0.5 * float((W[:, None] * (diff ** 2).sum(axis=2)).sum())
+    smooth = 0.5 * float((W * (diff ** 2).sum(axis=2)).sum())
     fit = mu * float(((F - Y) ** 2).sum())
     return smooth + fit
 
