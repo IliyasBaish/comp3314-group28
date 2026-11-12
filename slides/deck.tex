@@ -1,5 +1,5 @@
 % Group 28 deck — assembled draft. D (Thumula): this file is yours now.
-% A and D frames are placeholders with owner notes; B and C frames carry the
+% D frames are placeholders with owner notes; B and C frames carry the
 % merged talk scripts from theory-draft.md / evidence-draft.md (in \note{},
 % shown in presenter view). Figures: paper = gray caption, ours = orange.
 % Build: latexmk -pdf deck.tex  (from slides/). Beamer/Madrid, 16:9, no
@@ -50,36 +50,58 @@
 \end{frame}
 
 % ---------------------------------------------------------------- A: 2:15
-\begin{frame}{The algorithm in four steps (Section 2)}
+\begin{frame}{The algorithm in four steps}
   \begin{enumerate}
-    \item Affinity: $W_{ij} = \exp\!\bigl(-\lVert x_i - x_j\rVert^2 / 2\sigma^2\bigr)$,
-          $W_{ii} = 0$
-    \item Normalize: $S = D^{-1/2} W D^{-1/2}$, \ $D_{ii} = \textstyle\sum_j W_{ij}$
-    \item Iterate: $F(t+1) = \alpha\, S\, F(t) + (1-\alpha)\, Y$, \ $\alpha \in (0,1)$
-    \item Classify: $y_i = \arg\max_c F^{*}_{ic}$
+    \item \textbf{Build the graph.} For $i\ne j$, set
+          $W_{ij}=\exp(-\lVert x_i-x_j\rVert^2/(2\sigma^2))$. Set $W_{ii}=0$.
+    \item \textbf{Normalize.} Set $D_{ii}=\sum_j W_{ij}$ and
+          $S=D^{-1/2}WD^{-1/2}$.
+    \item \textbf{Propagate.} Start with $F^{(0)}=Y$, then update
+          $F^{(t+1)}=\alpha SF^{(t)}+(1-\alpha)Y$ until convergence.
+    \item \textbf{Predict.} Assign each unlabeled point the class with the
+          largest score in its row of $F^*$.
   \end{enumerate}
-  \vfill
-  {\small $Y$ clamps the two revealed labels; every unlabeled point starts at zero and
-  accumulates neighbor evidence. \todo{A: add your visual walkthrough / Figure 1 crop here}}
+  \smallskip
+  {\small $Y$ contains one-hot rows for known labels and zero rows elsewhere.
+  Each update mixes neighbor scores with the original label signal.}
+  \note{About 75 seconds. Start with all points, including the ones whose
+  labels we do not know. Turn each pairwise distance into a similarity using
+  a Gaussian. Sigma controls how quickly similarity falls with distance.
+  Set the diagonal to zero to prevent a point from sending its previous score
+  directly to itself. D stores the total edge weight for each point. Dividing
+  by the square root of the degrees at both ends adjusts for how strongly
+  connected each point is. Y contains the labels we are given. Each row of F
+  holds the current class scores for one point. In every round the first term
+  takes scores from neighbors. The second adds the original label signal
+  back in. Alpha controls how much weight we give to propagation. When the
+  scores settle, take the largest score in each unlabeled row.}
 \end{frame}
 
-\begin{frame}{How labels spread}
-  \begin{columns}
-    \begin{column}{0.56\textwidth}
+\begin{frame}{How labels spread along the moons}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
       \includegraphics[width=\textwidth]{fig2_paper}\\[0.3em]
-      {\footnotesize\paperfig{Figure 2: the same iteration at $t=10,50,100,400$}}
+      {\footnotesize\paperfig{Figure 2: iterations 10, 50, 100 and 400}}
     \end{column}
-    \begin{column}{0.40\textwidth}
-      \vspace{1.2em}
+    \begin{column}{0.41\textwidth}
       \begin{itemize}\small
-        \item t=10: signal hugs the revealed points
-        \item t=400: labels have flowed \emph{along} the moons,
-              not across the gap
-        \item the graph, not Euclidean distance, decides who is close
+        \item Each update carries class scores across one graph edge.
+        \item After several updates, a label can influence distant points
+              through a chain of strong similarities.
+        \item The two moons emerge as coherent classes as scores spread
+              along their curves.
       \end{itemize}
-      \todo{A: this is your walkthrough frame --- bullets are B's strawman, replace freely}
     \end{column}
   \end{columns}
+  \note{About 60 seconds. Point to the two revealed labels in the figure.
+  The rest of the points still matter because their positions shape the
+  graph. Think of a chain A, B, C, D along one moon. If A is labeled, B gets
+  a strong signal from A in one update. In later updates that signal travels
+  through C to D. A and D can be far apart and still influence each other
+  through those intermediate points. The picture shows this over four
+  snapshots. The Gaussian gives nearby points stronger direct connections,
+  and repeated updates make the longer structure visible in the scores.
+  Dylan will now explain why those scores converge.}
 \end{frame}
 
 % ---------------------------------------------------------------- B: 2:00
