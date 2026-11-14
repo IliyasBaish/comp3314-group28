@@ -1,7 +1,25 @@
-% Section owned by A (Iliyas): the algorithm itself — W, D, S, Y, F and the update.
+% Section owned by A (Iliyas).
 \section{Algorithm}\label{sec:algorithm}
 
-\emph{[A to write: the four-step construction, spreading-activation reading,
-self-reinforcement note, the update rule that \S\ref{sec:theory} then analyses.
-Target $\approx$0.5 page. Cross-reference \S\ref{sec:theory} for why it
-converges.] \todo{placeholder}}
+Learning with Local and Global Consistency builds a weighted graph over
+both labeled and unlabeled points \citep[Section~2]{zhou2003consistency}.
+For distinct points, the Gaussian affinity is
+$W_{ij}=\exp(-\lVert x_i-x_j\rVert^2/(2\sigma^2))$, where $\sigma$ controls
+how quickly similarity decreases with distance. Setting $W_{ii}=0$
+prevents direct self-reinforcement. With the diagonal degree matrix
+$D_{ii}=\sum_j W_{ij}$, the method normalizes the affinity at both ends
+of each edge by forming $S=D^{-1/2}WD^{-1/2}$.
+
+For $n$ points and $c$ classes, $Y\in\R^{n\times c}$ has one-hot rows for
+known labels and zero rows for unlabeled points. Starting with $F^{(0)}=Y$,
+the method updates the class scores by
+\begin{equation}
+  F^{(t+1)}=\alpha SF^{(t)}+(1-\alpha)Y,\qquad 0<\alpha<1.
+\end{equation}
+The first term collects class scores from neighbors. The second adds the
+original label signal back at every round. After several updates, a label
+can influence points multiple edges away. This lets unlabeled points along
+a curve connect distant points on the same structure. At convergence,
+each unlabeled point $i$ is assigned the class with the highest score in
+row $i$ of $F^*$. Section~\ref{sec:theory} explains why the iteration
+converges and relates it to the regularized objective.
