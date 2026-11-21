@@ -1,0 +1,27 @@
+\subsection{Reproduction: code, commands, and scope}\label{sec:reproduction}
+
+All code, raw outputs and the review trail are in the group's public repository,
+\url{https://github.com/IliyasBaish/comp3314-group28}: the core predictor
+\texttt{src/lgc.py} (A), the fixed evaluation harness (C), the verification script
+\texttt{experiments/convergence\_check.py} (B), tests, and every CSV and figure
+behind the numbers quoted here. From the repository root (Python 3.14.6, NumPy
+2.5.1, no GPU, seconds of runtime):
+
+\begin{quote}\small
+\begin{verbatim}
+python -m pip install -r requirements-experiments.txt
+python -m experiments.run --predictor src.lgc:predict \
+    --sigmas 0.15 0.05 0.1 0.3 0.6 --out results/comparison
+python -m experiments.convergence_check --sweep 0.5 0.9 0.95 0.99 0.999
+\end{verbatim}
+\end{quote}
+
+Seeds are fixed at $0,\dots,9$ with separate streams for data and label selection, so
+the runs are deterministic, and \texttt{predictions.csv}/\texttt{points.csv} let every
+number here be recomputed rather than taken on trust. The boundary of that claim
+matters: reproduced are the two-moons mechanism (the paper's Section~4.1) and the
+algebra of its Sections~2--3; not reproduced are the USPS and newsgroup studies, the
+RBF-SVM and harmonic/CMN comparators, the Figure~4 extension, or any of the paper's
+published error rates. Our contribution is therefore a qualitative check of the
+mechanism plus a quantitative comparison against our own 1-NN baseline, scored only
+on unrevealed labels with no parameter chosen using evaluation error.

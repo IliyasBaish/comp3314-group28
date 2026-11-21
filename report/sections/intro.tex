@@ -1,6 +1,26 @@
 % Section owned by D (Thumula): motivation, problem setting, consistency assumptions.
+% Drafted in full during the 21 Nov integration pass (B); D to review wording before the freeze.
 \section{Introduction}\label{sec:intro}
 
-\emph{[D to write: the semi-supervised setting, local vs global consistency
-assumptions, why the two-moons picture motivates the method. Target $\approx$0.4
-page. Placeholder keeps the page budget visible in the draft.] \todo{placeholder}}
+In most real datasets the expensive resource is the label, not the example: a
+shop accumulates products faster than category tags, a digit corpus faster than
+transcription. Standard supervised learners ignore everything unlabelled.
+Semi-supervised learning asks whether the geometry of the unlabelled points
+carries usable information about the decision boundary, and Zhou
+et al.~\citet{zhou2003consistency} answer with one compact idea: put labelled and
+unlabelled points into the \emph{same} graph, then diffuse their labels until a
+single score matrix is consistent on that graph at both scales at once.
+
+Those two scales are the paper's title. \emph{Local} consistency (smoothness) says that
+neighbouring points tend to share a label, so a classifier should not change
+much along short edges. \emph{Global} consistency (the cluster assumption) says
+that points joined by a long chain of short steps --- same manifold, same
+cluster --- share a label even when far apart in feature space. A nearest-neighbour rule enforces only the first; a purely global prior
+ignores where the labels sit. The method enforces both with one energy: an RBF
+affinity $W_{ij}=\exp(-\lVert x_i-x_j\rVert^{2}/2\sigma^{2})$
+turns the data into a weighted graph, and repeated normalised diffusion carries
+each revealed label along the chains that graph defines.
+
+The two-moons picture is the canonical demonstration, and it is where the
+distinction pays: two interlocking half-circles with one revealed label each,
+whose points are far apart in Euclidean distance but close along the curve.
