@@ -1,7 +1,63 @@
-% Section owned by D (Thumula): strengths, limitations, extensions (with C's evidence caveats as input).
+% Section owned by D (Thumula): strengths, assumptions, limitations, extensions.
+% Drafted in full during the 21 Nov integration pass (B) from C's review-approved caveats
+% (docs/c_paper_evidence.md) and our merged results/*.csv; D to review before the freeze.
 \section{Critical discussion}\label{sec:critique}
 
-\emph{[D to write: assumptions of the graph construction, model-selection gap,
-sensitivity to $\sigma$, scalability of the dense solve. C's
-\texttt{docs/c\_paper\_evidence.md} limitations list is the review-approved raw
-material. Target $\approx$0.9 page.] \todo{placeholder}}
+\paragraph{The guarantees are conditional on the graph, and one number builds the graph.}
+Everything tidy about the method --- real spectrum in $[-1,1]$, geometric decay,
+a unique minimiser --- follows from the symmetric normalisation of $W$, not from
+the labels. So the substantive modelling decision is $W$ itself: one RBF kernel
+with a zero diagonal, whose single parameter $\sigma$ decides which edges exist
+at all. Local and global consistency are assumptions \emph{about} that graph,
+not properties readable off a dataset: connect two clusters of different class
+and propagation will leak one into the other. Our sweep shows how sharply it
+bites --- with $\alpha$, the data and the revealed labels fixed, mean LGC error
+over the ten two-moons trials is $0.15\%$, $0.10\%$, $0.45\%$, $14.07\%$ and
+$32.59\%$ at $\sigma=0.05,0.10,0.15,0.30,0.60$ (Table~\ref{tab:sweep}) --- and
+the means hide the sharper point: at $\sigma=0.60$ the paired trials favour 1-NN
+in eight of ten ($+10.2$ points against us), while at $\sigma\le0.30$ LGC wins
+all ten. The defensible reading of the paper's headline is therefore not ``one
+label per class suffices'' but ``one label per class suffices \emph{given a
+neighbourhood scale that matches the geometry}''.
+
+\paragraph{Selection is circular exactly where the method is meant to help.}
+The authors acknowledge the difficulty of choosing parameters under extreme label
+scarcity and report each algorithm at its own optimum, apart from $\alpha$
+(Section~4). We did the only honest alternative for a toy study: fixed
+$\sigma=0.15$ before the run, so nothing was tuned on evaluation error --- clean,
+but arbitrary, and Table~\ref{tab:sweep} prices the arbitrariness. With two
+revealed labels there is almost nothing to validate against, which makes
+bandwidth stability the most useful follow-up to this paper.
+
+\paragraph{$\alpha$ costs iterations, not accuracy.}
+The contraction factor is $\alpha$, so hitting residual tolerance
+$\mathrm{tol}$ costs error $\approx\mathrm{tol}/(1-\alpha)$ and roughly
+$\ln(\mathrm{tol})/\ln(\alpha)$ iterations --- 1{,}405 measured at $\alpha=0.99$,
+10{,}860 at $0.999$ (Table~\ref{tab:convergence}, where the bounds hold but are
+loose). Toy accuracy rose monotonically over the same range
+($0.77\to1.00$): $\alpha$ behaves as the advertised local-versus-global knob, and
+on a real graph it decides affordability.
+
+\paragraph{The linear algebra is dense.}
+Building $W$ costs $O(n^{2})$ time and memory and the closed form needs a dense
+solve: at $n=10^{5}$ the affinity alone is $10^{10}$ entries, roughly 80\,GB in
+float64. Past the paper's own scale, sparse $k$-NN graphs with an iterative
+solve, or its Figure~4 out-of-sample route, are the ways forward --- neither of
+which we implemented.
+
+\paragraph{One printed identity is wrong, harmlessly.}
+Our audit (Appendix~\ref{app:variants}) finds Section~2's transpose claim false
+as matrix algebra (relative gap $0.82$) while the corrected form, carrying an
+extra $D$, verifies to $1.4\times10^{-15}$: a positive per-row rescaling leaves
+the argmax untouched, and no variant moved more than $6/200$ toy predictions ---
+a robustness finding as well as a correction.
+
+\paragraph{What our evidence is not.}
+Ours is 400 synthetic points, one revealed label per class, scored transductively
+on unrevealed points only: a qualitative check of the mechanism, not of the digit
+and text studies, and not a test on vectors unseen during graph construction.
+Demanding a label from every class is favourable --- natural arrival does not
+guarantee it --- and our ten seeds vary data and label placement together,
+confounding those sources of variation. The spread we quote is the sample SD
+across seeds, not a confidence interval; the paper's Figure~5 has no error bars
+at all, which limits how much its small gaps between curves mean.

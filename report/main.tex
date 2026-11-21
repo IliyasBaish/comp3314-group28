@@ -1,37 +1,75 @@
-% Group 28 report — LaTeX integration owned by B (Dylan).
-% Build: latexmk -pdf main.tex   (from report/)
-% Target ~3-4 pages per course spec. Section owners are marked in the stubs.
-\documentclass[10pt,a4paper]{article}
-\usepackage[margin=2.4cm]{geometry}
+% Group 28 technical report — COMP3314 Introduction to Machine Learning, Section 1A (2026).
+% LaTeX integration owned by B (Dylan). Course spec: NeurIPS style, [preprint] option,
+% member names + affiliations, max 4 pages main text (references and appendix excluded),
+% PDF only, file name Group_xx  ->  Group_28.pdf.
+% Build: latexmk -pdf main.tex   (from report/), then  cp main.pdf Group_28.pdf
+\documentclass{article}
+
+\usepackage[preprint]{neurips_2026}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
-\usepackage{booktabs}
-\usepackage{natbib}
-\usepackage[hidelinks]{hyperref}
 
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\todo}[1]{\textbf{[TODO: #1]}}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.75}
+\setlength{\emergencystretch}{2em}   % B: relieves the one overfull box in the theory paragraph
 
-\title{\bfseries Learning with Local and Global Consistency:\\
-  Group 28 Report (draft)}
-\author{Iliyas Baishev \quad Dylan Porter \quad Surkhay Malikov \quad Karu Thumula\\
-  \small COMP3314 Machine Learning, HKU, 2026--27 Sem 1}
-\date{Draft --- \today}
+\title{Learning with Local and Global Consistency:\\
+A Study, Verification and Partial Reproduction of Graph Label Propagation}
+
+\author{
+Iliyas Baishev \quad Dylan Porter \quad Surkhay Malikov \quad Karu Thumula\\
+COMP3314 Introduction to Machine Learning, Section 1A\\
+The University of Hong Kong\\
+Reproduction code (public): \url{https://github.com/IliyasBaish/comp3314-group28}
+}
 
 \begin{document}
+
 \maketitle
-\vspace{-3em}
+
+\begin{abstract}
+We study the label-propagation method of Zhou, Bousquet, Lal, Weston and
+Schölkopf (NIPS 2003): one weighted graph over labelled and unlabelled points,
+whose labels are diffused until a single score matrix satisfies local and global
+consistency at once. We re-derive why the iteration converges and why its limit
+is the unique minimiser of the paper's regularised objective, then check every
+claim on our own NumPy implementation: iteration and direct solve agree to
+$9\times10^{-11}$, the stopping error equals $\mathrm{tol}/(1-\alpha)$ exactly as
+the contraction analysis predicts, and one printed Section-2 matrix identity is
+false as written while harmless in use. On generated two-moons data our reproduction
+reaches $0.45\%$ error against $22.36\%$ for 1-NN at $\sigma=0.15$ and degrades
+to $32.59\%$ at $\sigma=0.60$: the mechanism holds, the bandwidth that makes it
+hold is the open problem.
+\end{abstract}
 
 \input{sections/intro}          % D
 \input{sections/algorithm}      % A
-\input{sections/theory}         % B (written)
-\input{c_evidence_draft}        % C (written; subsections)
+\input{sections/theory}         % B
+\section{Evidence and reproduction}\label{sec:evidence}
+% B: wraps C's draft (report/c_evidence_draft.tex), which supplies the two subsections.
+\input{c_evidence_draft}        % C
+\input{sections/reproduction}   % A+B: code, commands, environment
 \input{sections/critique}       % D
-\input{sections/conclusion}     % shared, short
+\input{sections/conclusion}     % shared
 
 \bibliographystyle{plainnat}
 \bibliography{references}
-% Note: c_references.bib superseded by references.bib (same key zhou2003consistency,
-% plus spectral-clustering/harmonic/manifold entries used in the theory section).
+% Note: c_references.bib is superseded by references.bib (same key zhou2003consistency,
+% plus the spectral-clustering / harmonic / manifold entries used in Section 3).
+
+\appendix
+\input{sections/appendix}       % full numeric tables; excluded from the 4-page main text
 
 \end{document}

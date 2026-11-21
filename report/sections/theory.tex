@@ -38,40 +38,14 @@ keeps the clamping term instead of imposing harmonicity.
 
 \paragraph{Verification.}
 We checked these claims numerically rather than trusting the derivation
-(\texttt{experiments/convergence\_check.py}, results in
-\texttt{results/\allowbreak convergence\_check\_summary.md}). Iterating to the residual tolerance
-$10^{-12}$ agrees with solving the linear system directly to
-$8\times10^{-11}$ max-abs on Role C's ten fixed two-moons trials, with zero argmax
-disagreements; the observed stopping error equals $\mathrm{tol}/(1-\alpha)$ in every
-run, because the residual criterion $\|F(t+1)-F(t)\|$ carries an extra factor
-$(1-\alpha)$ relative to the error $\|F(t)-F^{*}\|$. Stationarity of
-$\mathcal{Q}$ at $F^{*}$ holds to $2\times10^{-17}$, and every random perturbation
-of $F^{*}$ tested raised $\mathcal{Q}$. The measured error-decay slope sits slightly
-steeper than the predicted $\ln\alpha$ ($-0.0132$ vs $-0.0101$ at $\alpha=0.99$):
-the $\alpha^{t}$ worst case rides on the degree-weighted top eigenvector $D^{1/2}\mathbf{1}$,
-whose component of $F(0)-F^{*}$ nearly cancels here, so the next eigenvalue
-dominates in practice (Figure~\ref{fig:rate}).
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.72\linewidth]{../results/convergence_rate.png}
-  \caption{Log max-abs error of the iteration against the closed form, for four
-  values of $\alpha$, on our generated two-moons data. Straight lines confirm the
-  geometric decay; the dashed line is the predicted $\alpha_0^{t}$ rate. Our
-  result, not the paper's.}
-  \label{fig:rate}
-\end{figure}
-
-\paragraph{An equation check.}
-The last paragraph of Section~2 of the paper claims the transpose variant is
-``equivalent'' to $F^{*} = (D - \alpha W)^{-1} D Y$. As written it is not, as
-matrices: measured relative gap $0.82$ on our graph. The identity that does hold
-(verified to $3\times10^{-15}$) is $(I - \alpha P^{\top})^{-1} Y =
-D\,(D - \alpha W)^{-1} Y$ with $P = D^{-1}W$; pre-multiplying by $D$ is a positive
-per-row rescaling, so \emph{classifications} agree everywhere and the paper's
-word ``equivalent'' is defensible for the argmax rule while the displayed formula
-misplaces the $D$ factor. All operator variants ($S$-based, $P$-based,
-$P^{\top}$-based, and $(D-\alpha W)^{-1}$ with or without $DY$) differ by at most
-$6/200$ predicted points on our toy, a useful robustness observation: the
-method's classification is far less sensitive to the normalisation choice than
-the raw score matrices are. Full audit in \texttt{results/variants\_audit.csv}.
+(\texttt{experiments/convergence\_check.py}). Iterating to residual tolerance
+$10^{-12}$ agrees with the direct solve to $8\times10^{-11}$ max-abs on Role C's ten
+fixed trials, with zero argmax disagreements, and the observed stopping error equals
+$\mathrm{tol}/(1-\alpha)$ in every run: the residual criterion carries an extra factor
+$(1-\alpha)$ relative to the error. Stationarity of $\mathcal{Q}$ at $F^{*}$ holds to
+$2\times10^{-17}$, and every random perturbation we tested raised $\mathcal{Q}$. The
+measured decay slope is slightly steeper than the worst case $\ln\alpha$, because the
+$\lambda=1$ eigenmode nearly cancels for these starts. Appendix~\ref{app:convergence}
+gives the sweep (Table~\ref{tab:convergence}, Figure~\ref{fig:rate}) and audits the
+identities of the paper's Section~2 (Table~\ref{tab:variants}), where one printed form
+is false as algebra and harmless in use.
