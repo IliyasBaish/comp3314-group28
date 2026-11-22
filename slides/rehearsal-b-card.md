@@ -3,6 +3,9 @@
 Improvise from the beats. Nothing here is a sentence to read aloud.
 Numbers are taken from the merged CSVs, so they are safe to quote cold.
 Fixed 22 Nov: slide B1 now prints `F* = (1−α)(I − αS)⁻¹Y` — keep saying the `(1−α)`.
+If the theory feels foreign before you drill: read `docs/b-crash-briefing.md` first
+(10 minutes, plain language, same numbers), then come back to this card.
+
 
 ## 1. Beats (90–120 s, you have ~30 s of slack — spend it on numbers, not padding)
 
