@@ -11,7 +11,8 @@ our README's "Section 3" scope covers both because the convergence proof lives i
 - Two facts make convergence automatic:
   - S is **similar to the row-stochastic matrix** `D⁻¹W` → same eigenvalues, and S is symmetric → all real, all in [−1, 1] (‖S‖₂ = 1)
   - so `αS` is a **contraction** (α < 1) and `Σ (αS)ⁱ = (I − αS)⁻¹` (Neumann series)
-- Therefore `F* = (I − αS)⁻¹ Y` (their Eq. 3), reached from any starting point
+- Therefore `F* = (1−α) (I − αS)⁻¹ Y`, reached from any starting point
+  - ⚠️ say it WITH the `(1−α)`: that is what the submitted slide 5 and the report print. The paper's own Eq. 3 is written without the leading constant — it scales every row equally, so the argmax rule is unchanged. If someone reads the paper live, that one clause is the whole answer.
 - `(I − αS)⁻¹` **is a diffusion kernel** — labels spread along every path in the graph, αᵏ weights path length k. That's "global consistency" made explicit.
 
 **Speaker notes (≈45 s):** The algorithm looks like a heuristic, but the normalization step (2) is the quiet hero: it puts S's spectrum in [−1, 1], which makes αS contract, which gives a closed form. Same trick as PageRank's damping factor. Also worth one sentence: symmetric normalization matches spectral clustering, the paper itself says steps 1–2 are identical to NGJ (ref [9]).
@@ -24,7 +25,7 @@ our README's "Section 3" scope covers both because the convergence proof lives i
 - Setting ∂Q/∂F = 0: `F* − SF* + μ(F* − Y) = 0`, substitute `α = 1/(1+μ)` → `(I − αS)F* = (1−α)Y` — **the same fixed point** (their Eq. 6)
 - So: iterate = solve = minimize. Three views of one object, and Q is convex quadratic so the solution is unique.
 
-**Speaker notes (≈45 s):** This is our course's ridge-regression story in graph clothing: minimize (roughness penalty) + (fidelity), derivative = 0 gives a linear system. μ ↔ α dictionary: μ = (1−α)/α. One honest gap for the report, not the slides: §2's F* from iteration equals §3's Q-minimizer only up to the constant (1−α); argmax classification is unchanged. Also mention we verified this numerically (bonus check, B3) — iteration matched np.linalg.solve to ~1e-10 and stopped exactly where theory says it should.
+**Speaker notes (≈45 s):** This is our course's ridge-regression story in graph clothing: minimize (roughness penalty) + (fidelity), derivative = 0 gives a linear system. μ ↔ α dictionary: μ = (1−α)/α. Same-object statement, in one line for the room: the iterate, the solve and this minimiser agree up to the constant (1−α), which cancels in the argmax — the report keeps that distinction, and so does slide B1 now. Also mention we verified this numerically (bonus check, B3) — iteration matched np.linalg.solve to ~1e-10 and stopped exactly where theory says it should.
 
 ## Back-up B3 — Our convergence check (only if asked / if C's results slide needs support)
 
